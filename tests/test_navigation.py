@@ -23,25 +23,19 @@ class TestNavigation:
         # Кликаем на логотип Яндекс
         home_page.click_yandex_logo()
         
-        # Ждем открытия нового окна
-        time.sleep(2)  # Небольшая пауза для открытия окна
-        
         # Проверяем что открылось новое окно
         assert home_page.get_window_handles_count() == 2, "Не открылось новое окно"
         
         # Переключаемся на новое окно
         home_page.switch_to_new_tab()
-        
-        # Ждем загрузки страницы
-        time.sleep(3)
+
+        # Ждем редиректа на dzen.ru
+        home_page.wait_for_url_contains("dzen.ru")
+
         
         # Проверяем URL - должен содержать dzen.ru
         current_url = dzen_page.get_current_url()
         assert "dzen.ru" in current_url, f"Ожидался редирект на Дзен, но URL: {current_url}"
-        
-        # Закрываем вкладку и возвращаемся обратно
-        home_page.close_current_tab()
-        home_page.switch_to_window(original_window)
     
     @allure.title('Проверка перехода на главную через логотип Самокат')
     @allure.description('Проверяем возврат на главную страницу при клике на логотип Самокат')
@@ -50,14 +44,8 @@ class TestNavigation:
         
         home_page.accept_cookies()
         home_page.click_top_order_button()
-        
-        # Ждем перехода на страницу заказа
-        time.sleep(2)
-        
+    
         home_page.click_scooter_logo()
-        
-        # Ждем перехода на главную
-        time.sleep(2)
         
         current_url = home_page.get_current_url()
         assert current_url == Urls.BASE_URL, \
