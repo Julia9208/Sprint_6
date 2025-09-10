@@ -1,7 +1,6 @@
 import allure
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from config.config import TestConfig
+import time
+from config.urls import Urls
 from pages.home_page import HomePage
 from pages.dzen_page import DzenPage
 
@@ -19,38 +18,30 @@ class TestNavigation:
         home_page.accept_cookies()
         
         # Запоминаем текущее окно
-        original_window = home_page.driver.current_window_handle
+        original_window = home_page.current_window_handle()
         
         # Кликаем на логотип Яндекс
         home_page.click_yandex_logo()
         
-        # Ждем открытия нового окна (явное ожидание вместо time.sleep(2))
-        WebDriverWait(home_page.driver, 10).until(
-            lambda driver: len(driver.window_handles) == 2
-        )
+        # Ждем открытия нового окна
+        time.sleep(2)  # Небольшая пауза для открытия окна
         
         # Проверяем что открылось новое окно
-        assert len(home_page.driver.window_handles) == 2, "Не открылось новое окно"
+        assert home_page.get_window_handles_count() == 2, "Не открылось новое окно"
         
         # Переключаемся на новое окно
         home_page.switch_to_new_tab()
         
-        # Ждем редиректа на dzen.ru (явное ожидание вместо time.sleep(3))
-        WebDriverWait(home_page.driver, 10).until(
-            EC.url_contains("dzen.ru")
-        )
+        # Ждем загрузки страницы
+        time.sleep(3)
         
         # Проверяем URL - должен содержать dzen.ru
         current_url = dzen_page.get_current_url()
         assert "dzen.ru" in current_url, f"Ожидался редирект на Дзен, но URL: {current_url}"
         
-        # Проверяем что это именно главная страница Дзена
-        assert "yredirect=true" in current_url or "/" in current_url, \
-            f"Не главная страница Дзена. URL: {current_url}"
-        
-        # Закрываем вкладку Дзена и возвращаемся обратно
-        home_page.driver.close()
-        home_page.driver.switch_to.window(original_window)
+        # Закрываем вкладку и возвращаемся обратно
+        home_page.close_current_tab()
+        home_page.switch_to_window(original_window)
     
     @allure.title('Проверка перехода на главную через логотип Самокат')
     @allure.description('Проверяем возврат на главную страницу при клике на логотип Самокат')
@@ -59,9 +50,16 @@ class TestNavigation:
         
         home_page.accept_cookies()
         home_page.click_top_order_button()
+        
+        # Ждем перехода на страницу заказа
+        time.sleep(2)
+        
         home_page.click_scooter_logo()
         
+        # Ждем перехода на главную
+        time.sleep(2)
+        
         current_url = home_page.get_current_url()
-        assert current_url == TestConfig.BASE_URL, \
+        assert current_url == Urls.BASE_URL, \
             f"Не произошел переход на главную страницу. Текущий URL: {current_url}"
         

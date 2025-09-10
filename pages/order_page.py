@@ -1,4 +1,6 @@
 import allure
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from locators.order_page_locators import OrderPageLocators
 from pages.base_page import BasePage
 
@@ -23,7 +25,9 @@ class OrderPage(BasePage):
         self.enter_text(OrderPageLocators.DELIVERY_DATE, user_data['date'])
         
         self.click_element(OrderPageLocators.RENT_PERIOD)
-        self.click_element(OrderPageLocators.RENT_OPTION)
+        rent_option = (OrderPageLocators.RENT_OPTION[0], 
+                      OrderPageLocators.RENT_OPTION[1].format('трое суток'))
+        self.click_element(rent_option)
         
         self.click_element(OrderPageLocators.COLOR_BLACK)
         self.enter_text(OrderPageLocators.COMMENT_FIELD, user_data['comment'])
@@ -42,5 +46,11 @@ class OrderPage(BasePage):
     
     @allure.step('Проверить успешное оформление заказа')
     def is_order_successful(self):
-        return self.wait_for_element(OrderPageLocators.SUCCESS_MESSAGE).is_displayed()
-    
+        try:
+            WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located(OrderPageLocators.SUCCESS_MESSAGE)
+            )
+            return True
+        except:
+            return False
+        

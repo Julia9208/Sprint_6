@@ -17,4 +17,3 @@ class TestFAQ:
         actual_answer = home_page.get_faq_answer(question_index)
         assert actual_answer == expected_answer, \
             f"Неверный ответ на вопрос {question_index + 1}"
-        

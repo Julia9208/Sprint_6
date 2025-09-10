@@ -1,9 +1,9 @@
 from selenium.webdriver.common.by import By
 
 class HomePageLocators:
-    ORDER_BUTTON_BOTTOM = (By.XPATH, "(//button[contains(text(), 'Заказать')])[2]")
+    ORDER_BUTTON_BOTTOM = (By.XPATH, ".//div[@class='Home_FinishButton__1_cWm']/button[text()='Заказать']")
     COOKIE_ACCEPT = (By.ID, 'rcc-confirm-button')
-    FAQ_SECTION = (By.XPATH, "//div[contains(text(), 'Вопросы о важном')]")
+    FAQ_SECTION = (By.XPATH, ".//div[text()='Вопросы о важном']")
     
     FAQ_QUESTIONS = [
         (By.ID, "accordion__heading-0"),
@@ -26,3 +26,4 @@ class HomePageLocators:
         (By.ID, "accordion__panel-6"),
         (By.ID, "accordion__panel-7")
     ]
+    

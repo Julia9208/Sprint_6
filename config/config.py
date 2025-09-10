@@ -1,7 +1,3 @@
-class TestConfig:
-    BASE_URL = "https://qa-scooter.praktikum-services.ru/"
-    DZEN_URL = "https://dzen.ru/?yredirect=true"
-    
 class TestUsers:
     USER_1 = {
         'name': 'Анна',
@@ -34,3 +30,4 @@ class FAQData:
         'Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои.',
         'Да, обязательно. Всем самокатов! И Москве, и Московской области.'
     ]
+    
