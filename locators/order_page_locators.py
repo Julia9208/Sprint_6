@@ -16,7 +16,7 @@ class OrderPageLocators:
     RENT_OPTION = (By.XPATH, ".//div[text()='трое суток']")
     COLOR_BLACK = (By.ID, 'black')
     COMMENT_FIELD = (By.XPATH, ".//input[@placeholder='Комментарий для курьера']")
-    ORDER_BUTTON = (By.XPATH, "(.//button[@class = 'Button_Button__ra12g Button_Middle__1CSJM']")
+    ORDER_BUTTON = (By.XPATH, ".//button[@class = 'Button_Button__ra12g Button_Middle__1CSJM']")
     
     # Подтверждение заказа
     CONFIRM_BUTTON = (By.XPATH, ".//button[text()='Да']")
